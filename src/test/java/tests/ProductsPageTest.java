@@ -1,6 +1,5 @@
 package tests;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
@@ -8,25 +7,32 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.ProductsPage;
-
+import pages.ShoppingCartPage;
 import java.util.List;
 
+
+
 public class ProductsPageTest extends BaseProductsTest {
-    private final static int EXPECTED_PRODUCT_COUNT = 6;
-    private final static By FILTER = By.cssSelector("select[class='product_sort_container']");
+
+    private static final String OPTION_PRICE_LOW_TO_HIGH = "Price (low to high)";
+
+    protected ProductsPage productPage;
     private String productName;
-    private ProductsPage productPage;
 
 
     @BeforeClass(alwaysRun = true)
     public void setProductTests() {
         productPage = new ProductsPage(driver);
+        shoppingCartPage = new ShoppingCartPage(driver);
     }
+
+
+
 
     @AfterMethod
     public void clearCookie() {
         driver.manage().deleteAllCookies();
-        loginPage.logout();
+
     }
 
     @Test
@@ -34,23 +40,20 @@ public class ProductsPageTest extends BaseProductsTest {
         //login
         loginPage.login(USERNAME, PASSWORD);
         //count product on page
-        Assert.assertEquals(productPage.getProductsCount(), 6);
+        Assert.assertEquals(productPage.getProductsCount(), "");
 
     }
 
+//С этим тестом я запуталась и мне нужна твоя помощь
     @Test
     public void filterOnProductPage() {
         //login
         loginPage.login(USERNAME, PASSWORD);
         //make object dropdownFilter and find element
-        Select dropdownFilter = new Select(driver.findElement(FILTER));
+        List<WebElement> dropdownFilter =  productPage.openFilter();
         //make variable "options"
-        String options = "lohi";
-        //select options by value
-        dropdownFilter.selectByValue(options);
-        //I don't know how to check
-        //Assert.assertEquals("Price (low to high)");
-
+        //String options = "lohi";
+        Assert.assertEquals(dropdownFilter.get(2),OPTION_PRICE_LOW_TO_HIGH);
     }
 
     @Test

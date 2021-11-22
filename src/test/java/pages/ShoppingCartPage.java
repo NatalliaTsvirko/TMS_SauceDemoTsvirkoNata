@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ShoppingCartPage extends BasePage {
 
@@ -15,6 +16,10 @@ public class ShoppingCartPage extends BasePage {
     private final static By CONTINUE_SHOPPING_BUTTON = By.cssSelector("button[id='continue-shopping']");
     private final static By DESCRIPTION = By.cssSelector(".inventory_item_desc");
     private final static By OPEN_MENU_BUTTON = By.cssSelector("button[id='react-burger-menu-btn']");
+    private static final By LOGOUT_LINK = By.id("logout_sidebar_link");
+    private final static String PRODUCT_PAGE_URL = "https://www.saucedemo.com/inventory.html";
+    private final static By PRODUCT_NAME_LOCATOR = By.cssSelector(".inventory_item_name");
+
 
 
     public ShoppingCartPage(WebDriver driver) {
@@ -28,13 +33,20 @@ public class ShoppingCartPage extends BasePage {
        return driver.findElement(QUANTITY_ITEM).getText();
 
     }
+    public boolean isProductNameDisplayed(String productName) {
+        WebElement itemContainer = getItemContainer(productName);
+        return itemContainer.findElement(PRODUCT_NAME_LOCATOR).isDisplayed();
+    }
 
-    public String getProductDescription() {
-        return driver.findElement(DESCRIPTION).getText();
+
+    public String getProductDescription(String productName) {
+        WebElement itemContainer = getItemContainer(productName);
+        return itemContainer.findElement(DESCRIPTION).getText();
+
     }
 
     private WebElement getItemContainer(String productName) {
-        return driver.findElement(By.xpath("//div[contains(text(), '" + productName + "')]/ancestor::div[@class='inventory_item']"));
+        return driver.findElement(By.xpath("//div[contains(text(), '" + productName + "')]/ancestor::div[@class='cart_item_label']"));
     }
 
     public void clickRemoveButton() {
@@ -44,5 +56,21 @@ public class ShoppingCartPage extends BasePage {
     public String getProductPrice(String productName) {
         WebElement itemContainer = getItemContainer(productName);
         return itemContainer.findElement(PRICE_LOCATOR).getText();
+    }
+
+    public void logout(){
+        driver.findElement(OPEN_MENU_BUTTON).click();
+        driver.findElement(LOGOUT_LINK).click();
+    }
+
+    public int getProductsCount() {
+        List<WebElement> itemCount = driver.findElements(By.cssSelector(".cart_item"));
+        int count = itemCount.size();
+        return count;
+    }
+
+    public void waitVerifyThatItemDontHaveOnPage(){
+        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
     }
 }

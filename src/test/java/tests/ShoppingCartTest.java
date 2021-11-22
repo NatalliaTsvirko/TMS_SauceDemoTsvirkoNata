@@ -1,28 +1,40 @@
 package tests;
 
+import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import pages.ProductsPage;
 import pages.ShoppingCartPage;
 
-public class ShoppingCartTest extends BaseShoppingCartTest {
+import java.util.concurrent.TimeUnit;
 
-    private final static String PRODUCT_PAGE_URL = "https://www.saucedemo.com/inventory.html";
+import static org.testng.Assert.assertEquals;
+
+
+public class ShoppingCartTest extends BaseProductsTest {
+
+    private final static String ITEM_DESCRIPTION_BACKPACK = "carry.allTheThings() with the sleek, " +
+            "streamlined Sly Pack that melds uncompromising style with unequaled laptop and tablet protection.";
+    private final static int EXPECTED_PRODUCT_COUNT = 6;
+    private final static By PRODUCT_PRICE_ANY_ITEM = By.cssSelector("div[class='inventory_item_price']");
+    private final static By QUANTITY_ITEM = By.cssSelector(".cart_quantity");
+
+    protected ShoppingCartPage shoppingCartPage;
     private String productName;
-    private ShoppingCartPage shoppingCartPage;
 
     @BeforeClass(alwaysRun = true)
     public void setShoppingCartTests() {
         shoppingCartPage = new ShoppingCartPage(driver);
+        productPage = new ProductsPage(driver);
     }
 
     @AfterMethod
     public void clearCookie(){
         driver.manage().deleteAllCookies();
-        loginPage.logout();
     }
-//By separately tests is going.Together two tests fall
+
 
     @Test
     public void verifyDescriptionItemInCart() {
@@ -34,9 +46,7 @@ public class ShoppingCartTest extends BaseShoppingCartTest {
         //go to cart page
         productPage.clickToCartLink();
         //checking product description
-        Assert.assertEquals(shoppingCartPage.getProductDescription(), "carry.allTheThings() with the sleek," +
-                " streamlined Sly Pack that melds uncompromising " +
-                "style with unequaled laptop and tablet protection.");
+        assertEquals(shoppingCartPage.getProductDescription(productName),ITEM_DESCRIPTION_BACKPACK);
     }
     @Test
     public void backToContinueShopping(){
@@ -49,7 +59,7 @@ public class ShoppingCartTest extends BaseShoppingCartTest {
         productPage.clickToCartLink();
         //click to button "continue shopping"
         shoppingCartPage.clickToContinueShoppingButton();
-        Assert.assertEquals(productPage.getCurrentPageUrl(),PRODUCT_PAGE_URL);
+        assertEquals(productPage.getProductsCount(),EXPECTED_PRODUCT_COUNT);
 
     }
 
@@ -66,7 +76,11 @@ public class ShoppingCartTest extends BaseShoppingCartTest {
         //click to remove button
         shoppingCartPage.clickRemoveButton();
         //check what cart is empty
-        Assert.assertTrue(productName.isEmpty(),"");
+        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+        int numberOfElements = driver.findElements(PRODUCT_PRICE_ANY_ITEM).size();
+        assertEquals(numberOfElements, 0, "Element on page");
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
 
     }
 }

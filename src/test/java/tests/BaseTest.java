@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class BaseTest {
     final static String USERNAME = "standard_user";
     final static String PASSWORD = "secret_sauce";
+    final static String PRODUCT_PAGE_URL = "https://www.saucedemo.com/inventory.html";
 
     protected WebDriver driver;
     protected LoginPage loginPage;

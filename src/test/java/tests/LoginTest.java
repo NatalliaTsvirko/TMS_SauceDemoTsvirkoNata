@@ -26,11 +26,6 @@ public class LoginTest extends BaseTest {
         driver.manage().deleteAllCookies();
     }
 
-    @BeforeMethod
-    public void navigateToLoginPage() {
-        loginPage.open();
-    }
-
     @Test
     public void loginPositiveTest() {
         loginPage.login(USERNAME, PASSWORD);
@@ -58,22 +53,6 @@ public class LoginTest extends BaseTest {
         Assert.assertEquals(loginPage.getErrorMessageText(), expectedErrorMessage);
     }
 }
-
-
-
-
-
-
-//        WebElement buttonAddToCart = driver.findElement(By.xpath("//button[@id='add-to-cart-sauce-labs-backpack']"));
-//        buttonAddToCart.click();
-//        WebElement buttonCart = driver.findElement(By.cssSelector("a[class='shopping_cart_link']"));
-//        buttonCart.click();
-//        WebElement priceItem = driver.findElement(By.xpath("//div[text()='29.99']"));
-//        WebElement nameItem = driver.findElement(By.xpath("//div[text()='Sauce Labs Backpack']"));
-//        Assert.assertEquals(priceItem.getText(), "$29.99");
-//        Assert.assertEquals(nameItem.getText(), "Sauce Labs Backpack");
-//
-//    }
 
 
 

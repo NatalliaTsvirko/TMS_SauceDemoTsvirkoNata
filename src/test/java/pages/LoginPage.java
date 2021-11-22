@@ -10,8 +10,6 @@ public class LoginPage extends BasePage {
     private static final By PASSWORD_INPUT = By.id("password");
     private static final By LOGIN_BUTTON = By.id("login-button");
     private static final By ERROR_MESSAGE = By.cssSelector("[data-test=error]");
-    private static final By MENU = By.id("react-burger-menu-btn");
-    private static final By LOGOUT_LINK = By.id("logout_sidebar_link");
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -36,8 +34,4 @@ public class LoginPage extends BasePage {
         driver.findElement(LOGIN_BUTTON).click();
     }
 
-    public void logout(){
-        driver.findElement(MENU).click();
-        driver.findElement(LOGOUT_LINK).click();
-    }
 }
