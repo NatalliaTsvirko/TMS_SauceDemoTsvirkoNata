@@ -1,11 +1,12 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 
 public class LoginPage extends BasePage {
 
-    private final static String URL = "https://www.saucedemo.com/";
+
     private static final By USERNAME_INPUT = By.id("user-name");
     private static final By PASSWORD_INPUT = By.id("password");
     private static final By LOGIN_BUTTON = By.id("login-button");
@@ -14,11 +15,16 @@ public class LoginPage extends BasePage {
     public LoginPage(WebDriver driver) {
         super(driver);
     }
-
-    public void open() {
-        driver.get(URL);
+//LoadablePage pattern
+    @Override
+    public boolean isPageOpened() {
+        return isElementPresent(LOGIN_BUTTON);
     }
 
+    public LoginPage open() {
+        driver.get(URL);
+        return this;
+    }
 
     public String getErrorMessageText() {
         return driver.findElement(ERROR_MESSAGE).getText();
@@ -28,10 +34,11 @@ public class LoginPage extends BasePage {
         return driver.findElement(ERROR_MESSAGE).isDisplayed();
     }
 
-    public void login(String username, String password) {
+    public ProductsPage login(String username, String password) {
         driver.findElement(USERNAME_INPUT).sendKeys(username);
         driver.findElement(PASSWORD_INPUT).sendKeys(password);
         driver.findElement(LOGIN_BUTTON).click();
+        return new ProductsPage(driver);
     }
 
 }
