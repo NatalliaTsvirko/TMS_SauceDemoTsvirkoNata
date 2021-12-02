@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite  name="Negative" >
+    <groups>
+        <run>
+            <include name="Negative"/>
+        </run>
+    </groups>
+    <parameter name="browser" value="chrome"></parameter>
+    <parameter name="browser" value="firefox"></parameter>
+    <test name="Login test">
+        <classes>
+            <class name="tests.LoginTest"></class>
+            <class name="tests.ShoppingCartTest"></class>
+        </classes>
+    </test> <!-- Test -->
+</suite>
+
+
