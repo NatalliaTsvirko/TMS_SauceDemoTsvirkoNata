@@ -1,9 +1,12 @@
 package tests;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.ITestContext;
 import org.testng.annotations.*;
 import pages.BasePage;
 import pages.LoginPage;
@@ -26,8 +29,10 @@ public abstract class BaseTest  {
 
     @Parameters({"browser"})
     @BeforeClass(alwaysRun = true)
-    public void setUp(@Optional("chrome") String browser) {
+    @Step("Open browser")
+    public void setUp(ITestContext testContext, @Optional("chrome") String browser) {
         driver = DriverFactory.getDriver(browser);
+        testContext.setAttribute("driver",driver);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
         loginPage = new LoginPage(driver);
@@ -38,6 +43,7 @@ public abstract class BaseTest  {
 
 
     @AfterClass(alwaysRun = true)
+    @Step("Close browser")
     public void tearDown() {
         driver.quit();
 

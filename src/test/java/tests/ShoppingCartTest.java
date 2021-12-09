@@ -8,6 +8,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.ProductsPage;
 import pages.ShoppingCartPage;
+import utils.AllureUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -40,7 +41,7 @@ public class ShoppingCartTest extends BaseProductsTest{
     }
 
 
-    @Test(dataProvider = "Negative test on description items",groups = {"Negative"})
+    @Test(description = "Verify description in shopping cart with different data",dataProvider = "Negative test on description items",groups = {"Negative"})
     public void verifyDescriptionItemInCart(String productName, String itemDescription) {
         loginPage.login(USERNAME,PASSWORD);
         productPage.clickAddToCartButton(productName);
@@ -65,24 +66,26 @@ public class ShoppingCartTest extends BaseProductsTest{
         };
     }
 
-    @Test(groups = {"Regression"})
+    @Test(description = "Add product in shopping cart and back to product page",groups = {"Regression"})
     public void backToContinueShopping(){
         productName = "Sauce Labs Backpack";
         loginPage.login(USERNAME, PASSWORD);
         productPage.clickAddToCartButton(productName);
         productPage.clickToCartLink();
         shoppingCartPage.clickToContinueShoppingButton();
+        AllureUtils.attachScreenshot(driver);
         assertEquals(productPage.getProductsCount(),EXPECTED_PRODUCT_COUNT);
 
     }
 
-    @Test(retryAnalyzer = ReTry.class,groups = {"Smoke"})
+    @Test(description = "Remove item from shopping cart",retryAnalyzer = ReTry.class,groups = {"Smoke"})
     public void removeItemFromCart(){
         productName = "Sauce Labs Onesie";
         loginPage.login(USERNAME, PASSWORD);
         productPage.clickAddToCartButton(productName);
         productPage.clickToCartLink();
         shoppingCartPage.clickRemoveButton();
+        AllureUtils.attachScreenshot(driver);
         driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         int numberOfElements = driver.findElements(PRODUCT_PRICE_ANY_ITEM).size();
         Assert.assertEquals(numberOfElements, 0, "Element on page");

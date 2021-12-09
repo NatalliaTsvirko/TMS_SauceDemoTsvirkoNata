@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -48,13 +49,13 @@ public class ShoppingCartPage extends BasePage {
         return itemContainer.findElement(PRODUCT_NAME_LOCATOR).isDisplayed();
     }
 
-
+    @Step("Get product description")
     public String getProductDescription(String productName) {
         WebElement itemContainer = getItemContainer(productName);
         return itemContainer.findElement(DESCRIPTION).getText();
 
     }
-
+    @Step("Get product name")
     public String getProductName(String productName) {
         WebElement itemContainer = getItemContainer(productName);
         return itemContainer.findElement(PRODUCT_NAME_LOCATOR).getText();
@@ -64,7 +65,7 @@ public class ShoppingCartPage extends BasePage {
     private WebElement getItemContainer(String productName) {
         return driver.findElement(By.xpath("//div[contains(text(), '" + productName + "')]/ancestor::div[@class='cart_item_label']"));
     }
-
+    @Step("Click button 'remove' ")
     public void clickRemoveButton() {
         driver.findElement(REMOVE_FROM_CART_BUTTON).click();
     }

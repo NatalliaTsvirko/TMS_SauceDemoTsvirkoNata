@@ -1,9 +1,11 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import utils.AllureUtils;
 
-public class LoginPage extends BasePage{
+public class LoginPage extends BasePage {
     private static final By USERNAME_INPUT = By.id("user-name");
     private static final By PASSWORD_INPUT = By.id("password");
     private static final By LOGIN_BUTTON = By.id("login-button");
@@ -13,6 +15,7 @@ public class LoginPage extends BasePage{
     public LoginPage(WebDriver driver) {
         super(driver);
     }
+
     //LoadablePage pattern
     @Override
     public boolean isPageOpened() {
@@ -32,11 +35,31 @@ public class LoginPage extends BasePage{
         return driver.findElement(ERROR_MESSAGE).isDisplayed();
     }
 
+    @Step("Login to SauceDemo.com with username{username} and password{password}")
     public ProductsPage login(String username, String password) {
-        driver.findElement(USERNAME_INPUT).sendKeys(username);
-        driver.findElement(PASSWORD_INPUT).sendKeys(password);
-        driver.findElement(LOGIN_BUTTON).click();
+        setUsername(username);
+        setPasswordInput(password);
+        AllureUtils.attachScreenshot(driver);
+        clickButtonLogin();
         return new ProductsPage(driver);
     }
 
+    @Step("Setting username value: {username}")
+    public LoginPage setUsername(String username) {
+        driver.findElement(USERNAME_INPUT).sendKeys(username);
+        return this;
+    }
+
+    @Step("Setting password value: {password}")
+
+    public LoginPage setPasswordInput(String password) {
+        driver.findElement(PASSWORD_INPUT).sendKeys(password);
+        return this;
+    }
+
+    @Step("Clicking login button")
+    public LoginPage clickButtonLogin() {
+        driver.findElement(LOGIN_BUTTON).click();
+        return this;
+    }
 }

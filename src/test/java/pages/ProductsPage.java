@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -58,16 +59,16 @@ public class ProductsPage extends BasePage{
         WebElement itemContainer = getItemContainer(productName);
         return itemContainer.findElement(DESCRIPTION).getText();
     }
-
+    @Step("Click button 'add to cart'")
     public void clickAddToCartButton(String productName) {
         WebElement itemContainer = getItemContainer(productName);
         itemContainer.findElement(ADD_TO_CART_BUTTON).click();
     }
-
+    @Step("Click to cart link")
     public void clickToCartLink() {
         driver.findElement(CART_LINK).click();
     }
-
+    @Step("Get products count on product page")
     public int getProductsCount() {
         List<WebElement> countItem = driver.findElements(By.cssSelector("div[class='inventory_item']"));
         int count = countItem.size();

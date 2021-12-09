@@ -7,7 +7,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.ProductsPage;
 import pages.ShoppingCartPage;
-
+import utils.AllureUtils;
 
 
 public class ProductsPageTest extends BaseProductsTest{
@@ -33,16 +33,16 @@ public class ProductsPageTest extends BaseProductsTest{
 
     @Test(description = "verify count item on product page",groups = {"Regression"})
     public void verifyCountItemOnProductPage() {
-
         loginPage.login(USERNAME, PASSWORD);
         Assert.assertEquals(productPage.getProductsCount(), 6);
     }
 
-    @Test(dataProvider = "Add item in shopping cart",groups = {"Smoke"})
+    @Test(description = "Add item in shopping cart",dataProvider = "Add item in shopping cart",groups = {"Smoke"})
     public void addItemToCart(String username, String password,String productName) {
         loginPage.login(username, password);
         productPage.clickAddToCartButton(productName);
         productPage.clickToCartLink();
+        AllureUtils.attachScreenshot(driver);
         Assert.assertEquals(shoppingCartPage.getProductName(productName), productName);
     }
 
