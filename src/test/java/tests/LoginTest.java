@@ -24,6 +24,7 @@ public class LoginTest extends BaseTest {
     @AfterMethod
     public void clearCookies() {
         driver.manage().deleteAllCookies();
+        driver.navigate().refresh();
     }
 
     @Test(description = "Checked current URL after login",invocationCount = 4,threadPoolSize = 2,groups = {"Smoke","Positive"})

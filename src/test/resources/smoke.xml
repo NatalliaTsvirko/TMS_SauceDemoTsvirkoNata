@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite  name="Smoke" >
-       <groups>
-           <run>
-               <include name="Smoke"/>
-           </run>
-       </groups>
+<!--       <groups>-->
+<!--           <run>-->
+<!--               <include name="Smoke"/>-->
+<!--           </run>-->
+<!--       </groups>-->
     <parameter name="browser" value="chrome"></parameter>
     <test name="Login test">
         <classes>
             <class name="tests.LoginTest"></class>
-            <class name="tests.ProductsPageTest"></class>
-            <class name="tests.ShoppingCartTest"></class>
+
         </classes>
     </test> <!-- Test -->
 </suite>
